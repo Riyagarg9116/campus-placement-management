@@ -7,7 +7,7 @@ target/
 build/
 *.class
 *.log
-.mvn/wrapper/maven-wrapper.jar
+
 
 # IDE files
 .idea/

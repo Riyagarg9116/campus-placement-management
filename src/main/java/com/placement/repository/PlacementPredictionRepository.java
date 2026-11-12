@@ -9,11 +9,16 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface PlacementPredictionRepository extends JpaRepository<PlacementPrediction, Long> {
+public interface PlacementPredictionRepository
+        extends JpaRepository<PlacementPrediction, Long> {
 
     List<PlacementPrediction> findByStudentId(Long studentId);
 
-    Optional<PlacementPrediction> findTopByStudentIdOrderByPredictionDateDesc(Long studentId);
+    List<PlacementPrediction> findByStudentIdOrderByPredictionDateDesc(
+            Long studentId);
 
+    Optional<PlacementPrediction> findTopByStudentIdOrderByPredictionDateDesc(
+            Long studentId);
 }
+
 
