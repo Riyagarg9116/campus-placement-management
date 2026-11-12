@@ -69,3 +69,5 @@ logs/
 
 *.tmp
 *.bak
+HELP.md
+application.properties.safe-backup
