@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Campus Placement Portal</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <section id="authScreen" class="auth-screen">
+    <div class="auth-brand"><div class="brand-mark">CP</div><div><strong>Campus<span>Connect</span></strong><small>PLACEMENT PORTAL</small></div></div>
+    <div class="auth-layout"><div class="auth-intro"><div class="eyebrow">CAMPUS PLACEMENT MANAGEMENT</div><h1>Your next opportunity<br><em>starts here.</em></h1><p>A single workspace for placement opportunities, applications and career readiness.</p><div class="auth-points"><span>01&nbsp; Student opportunities</span><span>02&nbsp; Placement office workspace</span><span>03&nbsp; AI-powered placement insights</span></div></div>
+      <div class="auth-card"><div class="auth-tabs"><button class="auth-tab active" id="studentTab" onclick="setAuthRole('student')">Student</button><button class="auth-tab" id="adminTab" onclick="setAuthRole('admin')">Admin</button></div>
+        <div id="loginPanel"><div class="auth-heading"><div class="eyebrow" id="authEyebrow">STUDENT PORTAL</div><h2>Welcome back</h2><p>Sign in to continue to your workspace.</p></div><form id="loginForm"><label>Email address</label><input type="email" name="email" placeholder="you@college.edu" required><label>Password</label><input type="password" name="password" placeholder="Enter your password" required><button class="btn auth-submit" type="submit">Sign in <span>→</span></button></form><p class="auth-error" id="authError" role="alert"></p><p class="auth-foot" id="signupPrompt">New to CampusConnect? <button type="button" onclick="showRegister()">Create student account</button></p><p class="auth-foot admin-note" id="adminNote" hidden>Admin accounts are provisioned by the institution.</p></div>
+        <div id="registerPanel" hidden><div class="auth-heading"><div class="eyebrow">STUDENT REGISTRATION</div><h2>Create account</h2><p>Register with your college email to get started.</p></div><form id="registerForm"><label>Full name</label><input name="fullName" placeholder="Your full name" required><label>Email address</label><input type="email" name="email" placeholder="you@college.edu" required><label>Password</label><input type="password" name="password" minlength="8" placeholder="At least 8 characters" required><button class="btn auth-submit" type="submit">Create account <span>→</span></button></form><p class="auth-error" id="registerError" role="alert"></p><p class="auth-foot">Already registered? <button type="button" onclick="showLogin()">Sign in</button></p></div>
+      </div></div><div class="auth-bottom">CampusConnect <span>·</span> Secure role-based access</div>
+  </section>
+  <div id="appShell" hidden>
+  <aside class="sidebar">
+    <div class="brand"><div class="brand-mark">CP</div><div><strong>Campus<span>Connect</span></strong><small>PLACEMENT PORTAL</small></div></div>
+    
+    <nav id="navigation"></nav>
+    <div class="sidebar-bottom"><div class="avatar">AD</div><div><b id="userName">Admin Desk</b><small id="userRole">Placement Office</small></div><span class="online"></span></div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar"><div><div class="eyebrow">CAMPUS PLACEMENT MANAGEMENT</div><h1 id="pageTitle">Overview</h1></div><div class="top-actions"><span class="session"><i></i> Academic Year 2026–27</span><button class="icon-btn" title="Notifications">♧</button><button class="btn secondary logout-btn" onclick="logout()">Sign out</button></div></header>
+    <section class="content" id="content"></section>
+    <footer>CampusConnect <span>·</span> Placement Management System</footer>
+  </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
