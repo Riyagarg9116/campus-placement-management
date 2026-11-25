@@ -31,6 +31,8 @@ public class StudentRequest {
     private String phoneNumber;
 
     private String resumeUrl;
+    @Size(max = 1000, message = "Skills description is too long")
+private String skills;
 
     @NotNull(message = "Active backlogs is required")
     @Min(value = 0, message = "Backlogs cannot be negative")
@@ -83,6 +85,13 @@ public class StudentRequest {
     public void setResumeUrl(String resumeUrl) {
         this.resumeUrl = resumeUrl;
     }
+    public String getSkills() {
+    return skills;
+}
+
+public void setSkills(String skills) {
+    this.skills = skills;
+}
 
     public Integer getActiveBacklogs() {
         return activeBacklogs;

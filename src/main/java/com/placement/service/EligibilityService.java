@@ -2,14 +2,13 @@
 package com.placement.service;
 
 import com.placement.entity.Student;
-import com.placement.entity.EligibilityCriteria;
+import com.placement.entity.PlacementDrive;
 
 import com.placement.repository.StudentRepository;
-import com.placement.repository.EligibilityCriteriaRepository;
+import com.placement.repository.PlacementDriveRepository;
 
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,14 +16,14 @@ import java.util.List;
 public class EligibilityService {
 
     private final StudentRepository studentRepository;
-    private final EligibilityCriteriaRepository criteriaRepository;
+    private final PlacementDriveRepository driveRepository;
 
     public EligibilityService(
             StudentRepository studentRepository,
-            EligibilityCriteriaRepository criteriaRepository) {
+            PlacementDriveRepository driveRepository) {
 
         this.studentRepository = studentRepository;
-        this.criteriaRepository = criteriaRepository;
+        this.driveRepository = driveRepository;
     }
 
     public boolean checkEligibility(Long studentId, Long driveId) {
@@ -33,104 +32,90 @@ public class EligibilityService {
                 .orElseThrow(() ->
                         new RuntimeException("Student not found"));
 
-        EligibilityCriteria criteria =
-                criteriaRepository.findByPlacementDriveId(driveId)
-                        .orElseThrow(() ->
-                                new RuntimeException(
-                                        "Eligibility criteria not found"));
+        PlacementDrive drive = driveRepository.findById(driveId)
+                .orElseThrow(() ->
+                        new RuntimeException("Placement drive not found"));
 
-        // Validate student CGPA
-        BigDecimal cgpa = student.getCgpa();
+        // Check CGPA
+        Double cgpa = student.getCgpa() == null
+                ? null : student.getCgpa().doubleValue();
 
-        if (cgpa == null ||
-                cgpa.compareTo(BigDecimal.ZERO) < 0 ||
-                cgpa.compareTo(BigDecimal.TEN) > 0) {
+        Double minimumCgpa = drive.getMinimumCgpa();
+
+        if (cgpa == null || minimumCgpa == null || cgpa < minimumCgpa) {
             return false;
         }
 
-        // Validate minimum CGPA
-        BigDecimal minimumCgpa = criteria.getMinimumCgpa();
-
-        if (minimumCgpa == null ||
-                minimumCgpa.compareTo(BigDecimal.ZERO) < 0 ||
-                minimumCgpa.compareTo(BigDecimal.TEN) > 0) {
-            throw new RuntimeException("Invalid eligibility CGPA criteria");
-        }
-
-        if (cgpa.compareTo(minimumCgpa) < 0) {
+        if (cgpa < 0 || cgpa > 10 ||
+                minimumCgpa < 0 || minimumCgpa > 10) {
             return false;
         }
 
-        // Check maximum backlogs
-        Integer studentBacklogs = student.getActiveBacklogs();
-        Integer maximumBacklogs = criteria.getMaximumBacklogs();
+        // Check active backlogs
+        Integer backlogs = student.getActiveBacklogs();
+        Integer maximumBacklogs = drive.getMaximumBacklogs();
 
-        if (studentBacklogs == null || studentBacklogs < 0) {
+        if (backlogs == null || backlogs < 0 ||
+                maximumBacklogs == null || maximumBacklogs < 0) {
             return false;
         }
 
-        if (maximumBacklogs != null) {
-
-            if (maximumBacklogs < 0) {
-                throw new RuntimeException(
-                        "Maximum backlogs cannot be negative");
-            }
-
-            if (studentBacklogs > maximumBacklogs) {
-                return false;
-            }
+        if (backlogs > maximumBacklogs) {
+            return false;
         }
 
-        // Check eligible branches
-        String eligibleBranches = criteria.getEligibleBranches();
+        // Check branch
+        String acceptedBranches = drive.getAcceptedBranches();
         String studentBranch = student.getBranch();
 
-        if (eligibleBranches != null &&
-                !eligibleBranches.isBlank()) {
+        if (acceptedBranches == null || acceptedBranches.isBlank() ||
+                studentBranch == null || studentBranch.isBlank()) {
+            return false;
+        }
 
-            if (studentBranch == null || studentBranch.isBlank()) {
-                return false;
-            }
+        List<String> branches = Arrays.stream(acceptedBranches.split(","))
+                .map(String::trim)
+                .map(String::toLowerCase)
+                .toList();
 
-            List<String> branches = Arrays.stream(
-                            eligibleBranches.split(","))
-                    .map(String::trim)
-                    .filter(branch -> !branch.isEmpty())
-                    .map(String::toLowerCase)
-                    .toList();
-
-            if (!branches.contains(studentBranch.trim().toLowerCase())) {
-                return false;
-            }
+        if (!branches.contains(studentBranch.trim().toLowerCase())) {
+            return false;
         }
 
         // Check graduation year
         Integer graduationYear = student.getGraduationYear();
+        Integer requiredYear = drive.getGraduationYear();
 
-        if (graduationYear == null || graduationYear < 2020) {
+        if (graduationYear == null || requiredYear == null ||
+                graduationYear < requiredYear) {
             return false;
         }
 
-        Integer minimumYear = criteria.getMinimumGraduationYear();
-        Integer maximumYear = criteria.getMaximumGraduationYear();
+        // Check required skills
+        String requiredSkills = drive.getRequiredSkills();
+        String studentSkills = student.getSkills();
 
-        if (minimumYear != null && maximumYear != null &&
-                minimumYear > maximumYear) {
-            throw new RuntimeException(
-                    "Minimum graduation year cannot exceed maximum graduation year");
-        }
+        if (requiredSkills != null && !requiredSkills.isBlank()) {
 
-        if (minimumYear != null && graduationYear < minimumYear) {
-            return false;
-        }
+            if (studentSkills == null || studentSkills.isBlank()) {
+                return false;
+            }
 
-        if (maximumYear != null && graduationYear > maximumYear) {
-            return false;
+            List<String> skills = Arrays.stream(studentSkills.split(","))
+                    .map(String::trim)
+                    .map(String::toLowerCase)
+                    .toList();
+
+            List<String> required = Arrays.stream(requiredSkills.split(","))
+                    .map(String::trim)
+                    .map(String::toLowerCase)
+                    .toList();
+
+            if (!skills.containsAll(required)) {
+                return false;
+            }
         }
 
         return true;
     }
 }
-
-
-

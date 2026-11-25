@@ -77,3 +77,9 @@ logs/
 *.bak
 HELP.md
 application.properties.safe-backup
+
+# Local secrets and configuration
+application.properties
+!application.properties.example
+*.pem
+*.key

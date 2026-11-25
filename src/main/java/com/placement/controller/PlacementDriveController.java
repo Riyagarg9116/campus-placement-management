@@ -82,6 +82,16 @@ public class PlacementDriveController {
         return ResponseEntity.ok(
                 driveService.updateDriveStatus(id, status));
     }
+    // ADMIN: Update complete placement drive details
+@PutMapping("/{id}")
+@PreAuthorize("hasRole('ADMIN')")
+public ResponseEntity<PlacementDriveResponse> updateDrive(
+        @PathVariable Long id,
+        @Valid @RequestBody PlacementDriveRequest request) {
+
+    return ResponseEntity.ok(
+            driveService.updateDrive(id, request));
+}
 
     // ADMIN: Delete a placement drive
     @DeleteMapping("/{id}")

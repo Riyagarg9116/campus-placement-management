@@ -31,6 +31,17 @@ public class PlacementDrive {
 
     private String status;
 
+private Double minimumCgpa;
+
+private String acceptedBranches;
+
+private Integer maximumBacklogs;
+
+private Integer graduationYear;
+
+private String requiredSkills;
+
+
     public PlacementDrive() {
     }
 
@@ -105,5 +116,46 @@ public class PlacementDrive {
     public void setStatus(String status) {
         this.status = status;
     }
+
+public Double getMinimumCgpa() {
+    return minimumCgpa;
+}
+
+public void setMinimumCgpa(Double minimumCgpa) {
+    this.minimumCgpa = minimumCgpa;
+}
+
+public String getAcceptedBranches() {
+    return acceptedBranches;
+}
+
+public void setAcceptedBranches(String acceptedBranches) {
+    this.acceptedBranches = acceptedBranches;
+}
+
+public Integer getMaximumBacklogs() {
+    return maximumBacklogs;
+}
+
+public void setMaximumBacklogs(Integer maximumBacklogs) {
+    this.maximumBacklogs = maximumBacklogs;
+}
+
+public Integer getGraduationYear() {
+    return graduationYear;
+}
+
+public void setGraduationYear(Integer graduationYear) {
+    this.graduationYear = graduationYear;
+}
+
+public String getRequiredSkills() {
+    return requiredSkills;
+}
+
+public void setRequiredSkills(String requiredSkills) {
+    this.requiredSkills = requiredSkills;
+}
+
 }
 

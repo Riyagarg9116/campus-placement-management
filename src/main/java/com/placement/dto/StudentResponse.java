@@ -16,6 +16,7 @@ public class StudentResponse {
     private Integer graduationYear;
     private String phoneNumber;
     private String resumeUrl;
+    private String skills;
     private Integer activeBacklogs;
 
     public StudentResponse(Student student) {
@@ -29,6 +30,7 @@ public class StudentResponse {
         this.graduationYear = student.getGraduationYear();
         this.phoneNumber = student.getPhoneNumber();
         this.resumeUrl = student.getResumeUrl();
+        this.skills = student.getSkills();
         this.activeBacklogs = student.getActiveBacklogs();
     }
 
@@ -72,8 +74,11 @@ public class StudentResponse {
         return resumeUrl;
     }
 
+    public String getSkills() {
+        return skills;
+    }
+
     public Integer getActiveBacklogs() {
         return activeBacklogs;
     }
 }
-

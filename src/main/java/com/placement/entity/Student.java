@@ -29,6 +29,8 @@ public class Student {
     private String phoneNumber;
 
     private String resumeUrl;
+    @Column(length = 1000)
+    private String skills;
 
     private Integer activeBacklogs = 0;
 
@@ -106,5 +108,12 @@ public class Student {
     public void setActiveBacklogs(Integer activeBacklogs) {
         this.activeBacklogs = activeBacklogs;
     }
+    public String getSkills() {
+    return skills;
+}
+
+public void setSkills(String skills) {
+    this.skills = skills;
+}
 }
 

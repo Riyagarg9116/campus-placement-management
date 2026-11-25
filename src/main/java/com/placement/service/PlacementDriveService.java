@@ -51,6 +51,13 @@ public class PlacementDriveService {
         drive.setApplicationDeadline(request.getApplicationDeadline());
         drive.setDriveDate(request.getDriveDate());
 
+drive.setMinimumCgpa(request.getMinimumCgpa());
+drive.setAcceptedBranches(request.getAcceptedBranches());
+drive.setMaximumBacklogs(request.getMaximumBacklogs());
+drive.setGraduationYear(request.getGraduationYear());
+drive.setRequiredSkills(request.getRequiredSkills());
+
+
         if (request.getStatus() == null ||
                 request.getStatus().isBlank()) {
             drive.setStatus("OPEN");
@@ -116,6 +123,42 @@ public class PlacementDriveService {
 
         return new PlacementDriveResponse(updatedDrive);
     }
+
+    // Update complete placement drive details
+public PlacementDriveResponse updateDrive(
+        Long id, PlacementDriveRequest request) {
+
+    PlacementDrive drive = driveRepository.findById(id)
+            .orElseThrow(() ->
+                    new RuntimeException("Placement drive not found"));
+
+    Company company = companyRepository.findById(request.getCompanyId())
+            .orElseThrow(() ->
+                    new RuntimeException("Company not found"));
+
+    drive.setCompany(company);
+    drive.setJobRole(request.getJobRole());
+    drive.setJobDescription(request.getJobDescription());
+    drive.setPackageAmount(request.getPackageAmount());
+    drive.setJobLocation(request.getJobLocation());
+    drive.setApplicationDeadline(request.getApplicationDeadline());
+    drive.setDriveDate(request.getDriveDate());
+
+    drive.setMinimumCgpa(request.getMinimumCgpa());
+    drive.setAcceptedBranches(request.getAcceptedBranches());
+    drive.setMaximumBacklogs(request.getMaximumBacklogs());
+    drive.setGraduationYear(request.getGraduationYear());
+    drive.setRequiredSkills(request.getRequiredSkills());
+
+    if (request.getStatus() != null &&
+            !request.getStatus().isBlank()) {
+        drive.setStatus(request.getStatus().toUpperCase());
+    }
+
+    PlacementDrive updatedDrive = driveRepository.save(drive);
+
+    return new PlacementDriveResponse(updatedDrive);
+}
 
     // Delete placement drive safely
     public void deleteDrive(Long id) {

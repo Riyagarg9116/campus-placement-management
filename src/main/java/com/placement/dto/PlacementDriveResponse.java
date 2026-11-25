@@ -17,6 +17,13 @@ public class PlacementDriveResponse {
     private LocalDate driveDate;
     private String status;
 
+private Double minimumCgpa;
+private String acceptedBranches;
+private Integer maximumBacklogs;
+private Integer graduationYear;
+private String requiredSkills;
+
+
     public PlacementDriveResponse(PlacementDrive drive) {
         this.id = drive.getId();
         this.companyId = drive.getCompany().getId();
@@ -28,6 +35,13 @@ public class PlacementDriveResponse {
         this.applicationDeadline = drive.getApplicationDeadline();
         this.driveDate = drive.getDriveDate();
         this.status = drive.getStatus();
+
+this.minimumCgpa = drive.getMinimumCgpa();
+this.acceptedBranches = drive.getAcceptedBranches();
+this.maximumBacklogs = drive.getMaximumBacklogs();
+this.graduationYear = drive.getGraduationYear();
+this.requiredSkills = drive.getRequiredSkills();
+
     }
 
     public Long getId() {
@@ -69,5 +83,26 @@ public class PlacementDriveResponse {
     public String getStatus() {
         return status;
     }
+
+public Double getMinimumCgpa() {
+    return minimumCgpa;
+}
+
+public String getAcceptedBranches() {
+    return acceptedBranches;
+}
+
+public Integer getMaximumBacklogs() {
+    return maximumBacklogs;
+}
+
+public Integer getGraduationYear() {
+    return graduationYear;
+}
+
+public String getRequiredSkills() {
+    return requiredSkills;
+}
+
 }
 

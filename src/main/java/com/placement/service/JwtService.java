@@ -5,6 +5,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -14,14 +15,13 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    // Base64-encoded secret key (32 bytes or more)
-    private static final String SECRET_KEY =
-            "Y2FtcHVzLXBsYWNlbWVudC1zeXN0ZW0tc2VjcmV0LWtleS0yMDI2";
+    @Value("${jwt.secret}")
+    private String secretKey;
 
     private static final long EXPIRATION_TIME = 86400000;
 
     private SecretKey getSigningKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
@@ -62,4 +62,3 @@ public class JwtService {
                 && extractExpiration(token).after(new Date());
     }
 }
-

@@ -1,0 +1,10 @@
+
+spring.application.name=campus-placement
+
+# Database Configuration
+spring.datasource.url=jdbc:mysql://localhost:3306/campus_placement
+spring.datasource.username=YOUR_DB_USERNAME
+spring.datasource.password=YOUR_DB_PASSWORD
+
+# JWT Configuration
+jwt.secret=${JWT_SECRET}

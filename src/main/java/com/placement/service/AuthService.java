@@ -1,6 +1,7 @@
 
 package com.placement.service;
-
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 import com.placement.dto.AuthResponse;
 import com.placement.dto.LoginRequest;
 import com.placement.entity.User;
@@ -25,13 +26,18 @@ public class AuthService {
 
     public AuthResponse login(LoginRequest request) {
 
+
         User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() ->
-                        new RuntimeException("Invalid email or password"));
+        .orElseThrow(() ->
+                new ResponseStatusException(
+                        HttpStatus.UNAUTHORIZED,
+                        "Invalid email or password"));
 
         if (!passwordEncoder.matches(
                 request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid email or password");
+            throw new ResponseStatusException(
+        HttpStatus.UNAUTHORIZED,
+        "Invalid email or password");
         }
 
         String token = jwtService.generateToken(user.getEmail());
@@ -45,4 +51,3 @@ public class AuthService {
         );
     }
 }
-
