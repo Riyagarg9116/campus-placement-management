@@ -47,6 +47,12 @@ dist/
 .env
 .env.*
 !.env.example
+# Local secrets and configuration
+application.properties
+!application.properties.example
+
+*.pem
+*.key
 
 # ==============================
 # OPERATING SYSTEM
